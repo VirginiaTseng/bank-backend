@@ -47,9 +47,10 @@ public class AccountController {
 
 	@PostMapping("/login")
 	public ResponseEntity<Map<String, Object>> login(@RequestParam String userId, @RequestParam String password) {
-		Optional<UserPasswords> pws = userPasswordsService.getPasswordByAccountId(userId);
-
 		Map<String, Object> response = new HashMap<>();
+		
+		//check user password existed or not
+		Optional<UserPasswords> pws = userPasswordsService.getPasswordByAccountId(userId);
 		if (pws == null) {
 			System.out.println("Account not found");
 			response.put("success", false);
