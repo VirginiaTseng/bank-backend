@@ -60,21 +60,21 @@ public class BankTransactionsService {
     }
 
     @Transactional
-	public boolean handleTransaction(String id, int handleType, Double amount, Double calcBalance, Date updateTime, String desc) {
+	public boolean handleTransaction(String id, int handleType, BigDecimal amount, BigDecimal calcBalance, Date updateTime, String desc) {
 		// balance+amount
     	boolean execRet = false;
     	try {
 	    	BankTransactions record = new BankTransactions();
 	    	record.setAccountId(id);
-	    	record.setBalanceAfterTransaction(BigDecimal.valueOf(calcBalance));
-	    	record.setAmount(BigDecimal.valueOf(amount));
+	    	record.setBalanceAfterTransaction(calcBalance);
+	    	record.setAmount(amount);
 	    	record.setTransactionDate(updateTime);
 	    	record.setTransactionType(handleType);
-	    	record.setBranchId("Online_Website");
+	    	record.setBranchId("0");
 	    	record.setDescription(desc);
 	    	bankTransactionsRepository.save(record);
 	    	
-	    	int res1 = accountBalancesRepository.saveBalanceById(id, BigDecimal.valueOf(calcBalance), updateTime);
+	    	int res1 = accountBalancesRepository.saveBalanceById(id, calcBalance, updateTime);
 	
 	    	execRet = true;
     	}catch (Exception e) {

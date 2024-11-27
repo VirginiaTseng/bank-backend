@@ -31,10 +31,14 @@ import com.virginiabank.bankdemo.service.BankAccountInfoService;
 import com.virginiabank.bankdemo.service.BankTransactionsService;
 import com.virginiabank.bankdemo.service.UserPasswordsService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @RestController
 @RequestMapping("/api/accounts")
 @CrossOrigin(origins = "*")
 public class AccountController {
+	private static final Logger logger = LoggerFactory.getLogger(AccountController.class);
 
 	@Autowired
 	private BankAccountInfoService bankAccountInfoService;
@@ -48,7 +52,8 @@ public class AccountController {
 	@PostMapping("/login")
 	public ResponseEntity<Map<String, Object>> login(@RequestParam String userId, @RequestParam String password) {
 		Map<String, Object> response = new HashMap<>();
-		
+
+
 		//check user password existed or not
 		Optional<UserPasswords> pws = userPasswordsService.getPasswordByAccountId(userId);
 		if (pws == null) {
@@ -100,18 +105,21 @@ public class AccountController {
 
 	@PostMapping("/register")
 	public ResponseEntity<Map<String, Object>> register(@RequestBody RegisteredAccount request) {
-		System.out.println("register new Account");
-
 		Map<String, Object> response = new HashMap<>();
-
+		
+		 // log record
+	    logger.info("Register request received for username: {}", request.getUsername());
+	    
 		// input check ..... first deposit
 		request.getInitialDeposit();
 
 		// idProofNumber repeated or not
 
 		try {
+			// Generate a new account ID
 			String accountId = bankAccountInfoService.getANewAccountId();
-
+			logger.debug("Generated account ID: {}", accountId);
+			
 			// bankaccountInfo
 			BankAccountInfo accountInfo = new BankAccountInfo();
 			accountInfo.setId(Integer.valueOf(accountId.substring(3)));

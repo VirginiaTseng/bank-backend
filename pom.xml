@@ -14,7 +14,7 @@
 	<artifactId>bankdemo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>bankdemo</name>
-	<description>Demo project for Spring Boot</description>
+	<description>FoxBank project for Spring Boot</description>
 	<url />
 	<licenses>
 		<license />
@@ -69,6 +69,23 @@
 			<groupId>com.google.cloud</groupId>
 			<artifactId>google-cloud-texttospeech</artifactId>
 			<version>2.6.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-logging</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
 		</dependency>
 
 	</dependencies>
