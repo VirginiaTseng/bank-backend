@@ -60,21 +60,24 @@ public class AccountController {
 			System.out.println("Account not found");
 			response.put("success", false);
 			response.put("error", "Account not found!");
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+			return ResponseEntity.ok(response);
+			//return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 		}
 
 		if (!(pws.isPresent())) {
 			System.out.println("Account may not be exist!");
 			response.put("success", false);
 			response.put("error", "Account not exist!");
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+			return ResponseEntity.ok(response);
+			//return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 		}
 
 		UserPasswords up = pws.get();
 		if (!up.getDelFlag().equals(0)) {
 			response.put("success", false);
 			response.put("error", "Account has been deleted");
-			return ResponseEntity.status(HttpStatus.GONE).body(response);
+			return ResponseEntity.ok(response);
+			//return ResponseEntity.status(HttpStatus.GONE).body(response);
 		}
 		
 		String storedPasswordHash = up.getPasswordHash();
@@ -82,7 +85,8 @@ public class AccountController {
 	    if (!inputHash.equals(storedPasswordHash)) {
 			response.put("success", false);
 			response.put("error", "Incorrect account or password");
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+			return ResponseEntity.ok(response);
+			//return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
 		}
 
 		Optional<BankAccountInfo> account = bankAccountInfoService.getAccountById(userId);
@@ -90,7 +94,8 @@ public class AccountController {
 		if (!account.isPresent()) {
 			response.put("success", false);
 			response.put("error", "Account information not found");
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+			return ResponseEntity.ok(response);
+			//return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		} 
 		
 		String username = ((BankAccountInfo) (account.get())).getCustomerName();
