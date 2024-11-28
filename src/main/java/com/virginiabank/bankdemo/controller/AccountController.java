@@ -24,12 +24,12 @@ import com.virginiabank.bankdemo.model.AccountBalances;
 import com.virginiabank.bankdemo.model.BankAccountInfo;
 import com.virginiabank.bankdemo.model.BankTransactions;
 import com.virginiabank.bankdemo.model.RegisteredAccount;
-import com.virginiabank.bankdemo.model.TransactionType;
 import com.virginiabank.bankdemo.model.UserPasswords;
 import com.virginiabank.bankdemo.service.AccountBalancesService;
 import com.virginiabank.bankdemo.service.BankAccountInfoService;
 import com.virginiabank.bankdemo.service.BankTransactionsService;
 import com.virginiabank.bankdemo.service.UserPasswordsService;
+import com.virginiabank.bankdemo.tools.TransactionType;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,72 +49,19 @@ public class AccountController {
 	@Autowired
 	private BankTransactionsService bankTransactionsService;
 
-	@PostMapping("/login")
-	public ResponseEntity<Map<String, Object>> login(@RequestParam String userId, @RequestParam String password) {
-		Map<String, Object> response = new HashMap<>();
-
-
-		//check user password existed or not
-		Optional<UserPasswords> pws = userPasswordsService.getPasswordByAccountId(userId);
-		if (pws == null) {
-			System.out.println("Account not found");
-			response.put("success", false);
-			response.put("error", "Account not found!");
-			return ResponseEntity.ok(response);
-			//return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-		}
-
-		if (!(pws.isPresent())) {
-			System.out.println("Account may not be exist!");
-			response.put("success", false);
-			response.put("error", "Account not exist!");
-			return ResponseEntity.ok(response);
-			//return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-		}
-
-		UserPasswords up = pws.get();
-		if (!up.getDelFlag().equals(0)) {
-			response.put("success", false);
-			response.put("error", "Account has been deleted");
-			return ResponseEntity.ok(response);
-			//return ResponseEntity.status(HttpStatus.GONE).body(response);
-		}
-		
-		String storedPasswordHash = up.getPasswordHash();
-		String inputHash = hashPassword(password);
-	    if (!inputHash.equals(storedPasswordHash)) {
-			response.put("success", false);
-			response.put("error", "Incorrect account or password");
-			return ResponseEntity.ok(response);
-			//return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
-		}
-
-		Optional<BankAccountInfo> account = bankAccountInfoService.getAccountById(userId);
-
-		if (!account.isPresent()) {
-			response.put("success", false);
-			response.put("error", "Account information not found");
-			return ResponseEntity.ok(response);
-			//return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-		} 
-		
-		String username = ((BankAccountInfo) (account.get())).getCustomerName();
-		System.out.println("Username: " + username);
-
-		response.put("username", username);
-		response.put("success", true);
-
-		return ResponseEntity.ok(response);
-
-	}
-
+	/**
+	 * register new account
+	 * 
+	 * @param request
+	 * @return
+	 */
 	@PostMapping("/register")
 	public ResponseEntity<Map<String, Object>> register(@RequestBody RegisteredAccount request) {
+		// log record
+		logger.info("Register request received for username: {}", request.getUsername());
+
 		Map<String, Object> response = new HashMap<>();
-		
-		 // log record
-	    logger.info("Register request received for username: {}", request.getUsername());
-	    
+
 		// input check ..... first deposit
 		request.getInitialDeposit();
 
@@ -124,7 +71,7 @@ public class AccountController {
 			// Generate a new account ID
 			String accountId = bankAccountInfoService.getANewAccountId();
 			logger.debug("Generated account ID: {}", accountId);
-			
+
 			// bankaccountInfo
 			BankAccountInfo accountInfo = new BankAccountInfo();
 			accountInfo.setId(Integer.valueOf(accountId.substring(3)));
@@ -186,39 +133,55 @@ public class AccountController {
 		return ResponseEntity.ok(response);
 	}
 
+	/**
+	 * Get Bank Account Information by AccountID
+	 * 
+	 * @param id accountID
+	 * @return Bank Account Information
+	 */
 	@GetMapping("/{id}/info")
 	public ResponseEntity<BankAccountInfo> getAccountInfo(@PathVariable String id) {
-		System.out.println(id);
+		logger.info("account info request {}", id);
+
 		ResponseEntity<BankAccountInfo> result = bankAccountInfoService.getAccountById(id).map(ResponseEntity::ok)
 				.orElse(ResponseEntity.notFound().build());
 
 		return result;
 	}
 
-	@PutMapping("/{id}/logout")
-	public ResponseEntity<String> logout(@PathVariable Long id) {
-//      accountService.delete(id);
-		return ResponseEntity.ok("Account logout successful");
+	@PutMapping("/{id}/update")
+	public ResponseEntity<String> update(@PathVariable String id, @RequestBody BankAccountInfo toUpdateInfo) {
+		logger.info("account update request {}", id);
+
+		String accountId = id;
+		BankAccountInfo info = toUpdateInfo;
+		info.setId(Integer.valueOf(id.substring(3)));
+
+		bankAccountInfoService.saveAccount(info);
+
+		return ResponseEntity.ok("Update Account successful");
 	}
 
 	@PutMapping("/{id}/delete")
-	public ResponseEntity<String> delete(@PathVariable Long id) {
-		// .delete(id);
+	public ResponseEntity<String> delete(@PathVariable String id) {
+		logger.info("account update request {}", id);
+
+		// check user password existed or not
+		Optional<UserPasswords> pws = userPasswordsService.getPasswordByAccountId(id);
+		if (pws.isPresent()) {
+			UserPasswords up = pws.get();
+			up.setDelFlag(1);
+			userPasswordsService.saveUserPassword(up);
+//			if (!up.getDelFlag().equals(0)) {
+//				logger.error("Account_id {}  has been deleted!", id);
+//				response.put("success", false);
+//				response.put("error", "Account has been deleted");
+//				return ResponseEntity.ok(response);
+//				// return ResponseEntity.status(HttpStatus.GONE).body(response);
+//			}
+		}
+
 		return ResponseEntity.ok("Delete Account successful");
 	}
 
-	
-	private String hashPassword(String password) {
-	    try {
-	        MessageDigest md = MessageDigest.getInstance("MD5"); // 替换为实际的加密算法
-	        byte[] hashBytes = md.digest(password.getBytes());
-	        StringBuilder sb = new StringBuilder();
-	        for (byte b : hashBytes) {
-	            sb.append(String.format("%02x", b)); // 转为16进制字符串
-	        }
-	        return sb.toString();
-	    } catch (NoSuchAlgorithmException e) {
-	        throw new RuntimeException("Error hashing password", e);
-	    }
-	}
 }

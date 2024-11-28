@@ -1,4 +1,4 @@
-package com.virginiabank.bankdemo.model;
+package com.virginiabank.bankdemo.tools;
 
 public enum TransactionType {
     DEPOSIT(1),  // 存款

@@ -21,10 +21,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.virginiabank.bankdemo.model.AccountBalances;
 import com.virginiabank.bankdemo.model.BankTransactions;
-import com.virginiabank.bankdemo.model.TransactionType;
 import com.virginiabank.bankdemo.service.AccountBalancesService;
 import com.virginiabank.bankdemo.service.BankTransactionsService;
 import com.virginiabank.bankdemo.tools.ConversionUtils;
+import com.virginiabank.bankdemo.tools.TransactionType;
 
 /**
  * 
@@ -39,6 +39,7 @@ public class BankTransactionController {
 	private AccountBalancesService accountBalancesService;
 	@Autowired
 	private BankTransactionsService bankTransactionsService;
+	
 
 	/**
 	 * Retrieve User's Whole Transaction History
