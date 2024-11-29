@@ -1,14 +1,13 @@
 package com.virginiabank.bankdemo.controller;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.virginiabank.bankdemo.model.AccountBalances;
@@ -31,9 +29,11 @@ import com.virginiabank.bankdemo.service.BankTransactionsService;
 import com.virginiabank.bankdemo.service.UserPasswordsService;
 import com.virginiabank.bankdemo.tools.TransactionType;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+/**
+ * Account Management Controller
+ * 
+ * @author virginiatseng
+ */
 @RestController
 @RequestMapping("/api/accounts")
 @CrossOrigin(origins = "*")
@@ -52,8 +52,8 @@ public class AccountController {
 	/**
 	 * register new account
 	 * 
-	 * @param request
-	 * @return
+	 * @param request web request
+	 * @return web return
 	 */
 	@PostMapping("/register")
 	public ResponseEntity<Map<String, Object>> register(@RequestBody RegisteredAccount request) {
@@ -149,6 +149,13 @@ public class AccountController {
 		return result;
 	}
 
+	/**
+	 * Update account information
+	 * 
+	 * @param id           accountID
+	 * @param toUpdateInfo Account Information to be updated
+	 * @return
+	 */
 	@PutMapping("/{id}/update")
 	public ResponseEntity<String> update(@PathVariable String id, @RequestBody BankAccountInfo toUpdateInfo) {
 		logger.info("account update request {}", id);
@@ -162,6 +169,12 @@ public class AccountController {
 		return ResponseEntity.ok("Update Account successful");
 	}
 
+	/**
+	 * Delete an account (put the delflag of this account into 1 )
+	 * 
+	 * @param id accountID passed through internet
+	 * @return Return back to web browser
+	 */
 	@PutMapping("/{id}/delete")
 	public ResponseEntity<String> delete(@PathVariable String id) {
 		logger.info("account update request {}", id);
@@ -170,15 +183,12 @@ public class AccountController {
 		Optional<UserPasswords> pws = userPasswordsService.getPasswordByAccountId(id);
 		if (pws.isPresent()) {
 			UserPasswords up = pws.get();
+			if (up.getDelFlag().equals(1)) {
+				logger.error("Account_id {}  has been deleted!", id);
+				return ResponseEntity.ok("Account has already been deleted");
+			}
 			up.setDelFlag(1);
 			userPasswordsService.saveUserPassword(up);
-//			if (!up.getDelFlag().equals(0)) {
-//				logger.error("Account_id {}  has been deleted!", id);
-//				response.put("success", false);
-//				response.put("error", "Account has been deleted");
-//				return ResponseEntity.ok(response);
-//				// return ResponseEntity.status(HttpStatus.GONE).body(response);
-//			}
 		}
 
 		return ResponseEntity.ok("Delete Account successful");

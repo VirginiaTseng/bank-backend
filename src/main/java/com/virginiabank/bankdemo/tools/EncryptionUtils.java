@@ -6,6 +6,7 @@ import java.security.NoSuchAlgorithmException;
 /**
  * EncryptionUtils  
  * Encrypting password in order to be saved into Database
+ * @author virginia.zane
  */
 public class EncryptionUtils {
 	

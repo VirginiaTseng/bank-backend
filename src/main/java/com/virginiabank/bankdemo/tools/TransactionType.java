@@ -1,5 +1,9 @@
 package com.virginiabank.bankdemo.tools;
 
+/**
+ * TransactionType ENUM type of transactions
+ * @author virginia.zane
+ */
 public enum TransactionType {
     DEPOSIT(1),  // 存款
     WITHDRAW(2); // 取款

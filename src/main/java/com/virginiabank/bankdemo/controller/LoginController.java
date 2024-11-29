@@ -23,6 +23,10 @@ import com.virginiabank.bankdemo.service.BankAccountInfoService;
 import com.virginiabank.bankdemo.service.UserPasswordsService;
 import com.virginiabank.bankdemo.tools.EncryptionUtils;
 
+/**
+ * LoginController  Login/Logout Controller
+ * @author virginia.zane
+ */
 @RestController
 @RequestMapping("/api/accounts")
 @CrossOrigin(origins = "*")
@@ -34,6 +38,12 @@ public class LoginController {
 	@Autowired
 	private UserPasswordsService userPasswordsService;
 	
+	/**
+	 * Login  for the post request of login
+	 * @param userId		userID
+	 * @param password		user password
+	 * @return web return
+	 */
 	@PostMapping("/login")
 	public ResponseEntity<Map<String, Object>> login(@RequestParam String userId, @RequestParam String password) {
 		Map<String, Object> response = new HashMap<>();
@@ -96,18 +106,33 @@ public class LoginController {
 
 	}
 	
+	/**
+	 * Log out  for the [PUT] request of log out
+	 * @param userId
+	 * @return
+	 */
 	@PutMapping("/{id}/logout")
 	public ResponseEntity<String> logout1(@RequestParam String userId) {
 		logger.info("Account_id {} log1 out [Put]", userId);
 		return ResponseEntity.ok("Account logout successful");
 	}
 
+	/**
+	 * Log out  for the [POST] request of log out
+	 * @param userId
+	 * @return
+	 */
 	@PostMapping("/{id}/logout")
 	public ResponseEntity<String> logout(@PathVariable String id) {
 		logger.info("Account_id {} log out [Post]", id);
 		return ResponseEntity.ok("Account logout successful");
 	}
 	
+	/**
+	 * Log out  for the [GET] request of log out
+	 * @param userId
+	 * @return
+	 */
 	@GetMapping("/{id}/logout")
 	public ResponseEntity<String> logout2(@PathVariable String id) {
 		logger.info("Account_id {} log out [Get]", id);

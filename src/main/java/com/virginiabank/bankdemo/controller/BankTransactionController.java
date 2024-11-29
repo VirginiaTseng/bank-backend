@@ -27,7 +27,8 @@ import com.virginiabank.bankdemo.tools.ConversionUtils;
 import com.virginiabank.bankdemo.tools.TransactionType;
 
 /**
- * 
+ * BankTransactionController Transaction Management Controller
+ * @author virginia.zane
  */
 @RestController
 @RequestMapping("/api/accounts")

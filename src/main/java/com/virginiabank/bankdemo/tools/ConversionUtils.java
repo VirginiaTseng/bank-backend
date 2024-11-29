@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 /**
  * Utility class for type conversions, particularly for safely converting objects
  * to BigDecimal, Integer, etc.
+ * 
+ * @author virginia.zane
  */
 public class ConversionUtils {
 

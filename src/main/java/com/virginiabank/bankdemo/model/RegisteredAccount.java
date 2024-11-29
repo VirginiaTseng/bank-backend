@@ -4,6 +4,11 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 
+/**
+ * RegisteredAccount
+ *    POJO used for convert Registered Account data from web, used in controllers
+ * @author virginia.zane
+ */
 public class RegisteredAccount {
 
 	    private String username;
