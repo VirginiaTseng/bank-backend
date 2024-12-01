@@ -13,6 +13,11 @@ public interface BankAccountInfoRepository extends JpaRepository<BankAccountInfo
 //			+ "FROM BankAccountInfo\n"
 //			+ "WHERE accountId LIKE 'ACC%'")
 	
+	 /**
+     * Finds the maximum account ID in the BankAccountInfo table.
+     *
+     * @return the maximum account ID as an Integer
+     */
 	@Query("SELECT MAX(id) \n"
 			+ "FROM BankAccountInfo\n")
 	Integer findMaxAccountId();

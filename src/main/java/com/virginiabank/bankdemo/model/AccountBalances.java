@@ -1,3 +1,4 @@
+
 package com.virginiabank.bankdemo.model;
 
 import javax.persistence.*;
@@ -23,39 +24,75 @@ public class AccountBalances {
     @JoinColumn(name = "Account_ID", referencedColumnName = "Account_ID", insertable = false, updatable = false)
     private BankAccountInfo bankAccountInfo;
 
-    // Getters and setters
-	public String getAccountId() {
-		return accountId;
-	}
+    /**
+     * Gets the account ID.
+     *
+     * @return the account ID
+     */
+    public String getAccountId() {
+        return accountId;
+    }
 
-	public void setAccountId(String accountId) {
-		this.accountId = accountId;
-	}
+    /**
+     * Sets the account ID.
+     *
+     * @param accountId the new account ID
+     */
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
+    }
 
-	public BigDecimal getBalance() {
-		return balance;
-	}
+    /**
+     * Gets the balance of the account.
+     *
+     * @return the balance of the account
+     */
+    public BigDecimal getBalance() {
+        return balance;
+    }
 
-	public void setBalance(BigDecimal balance) {
-		this.balance = balance;
-	}
+    /**
+     * Sets the balance of the account.
+     *
+     * @param balance the new balance of the account
+     */
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
+    }
 
-	public Date getLastUpdated() {
-		return lastUpdated;
-	}
+    /**
+     * Gets the last updated date of the account balance.
+     *
+     * @return the last updated date
+     */
+    public Date getLastUpdated() {
+        return lastUpdated;
+    }
 
-	public void setLastUpdated(Date lastUpdated) {
-		this.lastUpdated = lastUpdated;
-	}
+    /**
+     * Sets the last updated date of the account balance.
+     *
+     * @param lastUpdated the new last updated date
+     */
+    public void setLastUpdated(Date lastUpdated) {
+        this.lastUpdated = lastUpdated;
+    }
 
-	public BankAccountInfo getBankAccountInfo() {
-		return bankAccountInfo;
-	}
+    /**
+     * Gets the bank account information associated with this account balance.
+     *
+     * @return the bank account information
+     */
+    public BankAccountInfo getBankAccountInfo() {
+        return bankAccountInfo;
+    }
 
-	public void setBankAccountInfo(BankAccountInfo bankAccountInfo) {
-		this.bankAccountInfo = bankAccountInfo;
-	}
-
-
-    
+    /**
+     * Sets the bank account information associated with this account balance.
+     *
+     * @param bankAccountInfo the new bank account information
+     */
+    public void setBankAccountInfo(BankAccountInfo bankAccountInfo) {
+        this.bankAccountInfo = bankAccountInfo;
+    }
 }

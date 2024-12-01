@@ -14,6 +14,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface AccountBalancesRepository extends JpaRepository<AccountBalances, String> {
 
+	/**
+     * Updates the balance and last updated date for the account with the given ID.
+     *
+     * @param accountId the ID of the account
+     * @param balance the new balance of the account
+     * @param lastUpdated the date and time when the balance was last updated
+     * @return the number of rows affected by the update
+     */
     @Modifying // 表示此查询是数据修改操作
     @Transactional // 需要事务支持
     @Query("UPDATE AccountBalances a SET a.balance = :balance, a.lastUpdated=:lastUpdated  WHERE a.accountId = :accountId")

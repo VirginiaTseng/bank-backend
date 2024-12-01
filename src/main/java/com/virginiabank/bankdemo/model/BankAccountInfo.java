@@ -1,3 +1,4 @@
+
 package com.virginiabank.bankdemo.model;
 
 import javax.persistence.*;
@@ -11,7 +12,7 @@ public class BankAccountInfo {
     @Id
     @Column(name = "Account_ID", length = 20)
     private String accountId;
-    
+
     @Column(name = "id")
     private Integer id;
 
@@ -60,129 +61,283 @@ public class BankAccountInfo {
     private BigDecimal annualIncome;
 
     // Getters and setters
-	public String getAccountId() {
-		return accountId;
-	}
 
-	public void setAccountId(String accountId) {
-		this.accountId = accountId;
-	}
+    /**
+     * Gets the account ID.
+     *
+     * @return the account ID
+     */
+    public String getAccountId() {
+        return accountId;
+    }
 
-	public String getCustomerName() {
-		return customerName;
-	}
+    /**
+     * Sets the account ID.
+     *
+     * @param accountId the new account ID
+     */
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
+    }
 
-	public void setCustomerName(String customerName) {
-		this.customerName = customerName;
-	}
+    /**
+     * Gets the customer name.
+     *
+     * @return the customer name
+     */
+    public String getCustomerName() {
+        return customerName;
+    }
 
-	public Date getDateOfBirth() {
-		return dateOfBirth;
-	}
+    /**
+     * Sets the customer name.
+     *
+     * @param customerName the new customer name
+     */
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
 
-	public void setDateOfBirth(Date dateOfBirth) {
-		this.dateOfBirth = dateOfBirth;
-	}
+    /**
+     * Gets the date of birth.
+     *
+     * @return the date of birth
+     */
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
 
-	public Integer getGender() {
-		return gender;
-	}
+    /**
+     * Sets the date of birth.
+     *
+     * @param dateOfBirth the new date of birth
+     */
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
 
-	public void setGender(Integer gender) {
-		this.gender = gender;
-	}
+    /**
+     * Gets the gender.
+     *
+     * @return the gender
+     */
+    public Integer getGender() {
+        return gender;
+    }
 
-	public String getAddress() {
-		return address;
-	}
+    /**
+     * Sets the gender.
+     *
+     * @param gender the new gender
+     */
+    public void setGender(Integer gender) {
+        this.gender = gender;
+    }
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
+    /**
+     * Gets the address.
+     *
+     * @return the address
+     */
+    public String getAddress() {
+        return address;
+    }
 
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
+    /**
+     * Sets the address.
+     *
+     * @param address the new address
+     */
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
+    /**
+     * Gets the phone number.
+     *
+     * @return the phone number
+     */
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    /**
+     * Sets the phone number.
+     *
+     * @param phoneNumber the new phone number
+     */
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    /**
+     * Gets the email.
+     *
+     * @return the email
+     */
+    public String getEmail() {
+        return email;
+    }
 
-	public Integer getAccountType() {
-		return accountType;
-	}
+    /**
+     * Sets the email.
+     *
+     * @param email the new email
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public void setAccountType(Integer accountType) {
-		this.accountType = accountType;
-	}
+    /**
+     * Gets the account type.
+     *
+     * @return the account type
+     */
+    public Integer getAccountType() {
+        return accountType;
+    }
 
-	public BigDecimal getInitialDeposit() {
-		return initialDeposit;
-	}
+    /**
+     * Sets the account type.
+     *
+     * @param accountType the new account type
+     */
+    public void setAccountType(Integer accountType) {
+        this.accountType = accountType;
+    }
 
-	public void setInitialDeposit(BigDecimal initialDeposit) {
-		this.initialDeposit = initialDeposit;
-	}
+    /**
+     * Gets the initial deposit.
+     *
+     * @return the initial deposit
+     */
+    public BigDecimal getInitialDeposit() {
+        return initialDeposit;
+    }
 
-	public Date getDateOpened() {
-		return dateOpened;
-	}
+    /**
+     * Sets the initial deposit.
+     *
+     * @param initialDeposit the new initial deposit
+     */
+    public void setInitialDeposit(BigDecimal initialDeposit) {
+        this.initialDeposit = initialDeposit;
+    }
 
-	public void setDateOpened(Date dateOpened) {
-		this.dateOpened = dateOpened;
-	}
+    /**
+     * Gets the date opened.
+     *
+     * @return the date opened
+     */
+    public Date getDateOpened() {
+        return dateOpened;
+    }
 
-	public String getBranchId() {
-		return branchId;
-	}
+    /**
+     * Sets the date opened.
+     *
+     * @param dateOpened the new date opened
+     */
+    public void setDateOpened(Date dateOpened) {
+        this.dateOpened = dateOpened;
+    }
 
-	public void setBranchId(String branchId) {
-		this.branchId = branchId;
-	}
+    /**
+     * Gets the branch ID.
+     *
+     * @return the branch ID
+     */
+    public String getBranchId() {
+        return branchId;
+    }
 
-	public String getIdProofType() {
-		return idProofType;
-	}
+    /**
+     * Sets the branch ID.
+     *
+     * @param branchId the new branch ID
+     */
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
 
-	public void setIdProofType(String idProofType) {
-		this.idProofType = idProofType;
-	}
+    /**
+     * Gets the ID proof type.
+     *
+     * @return the ID proof type
+     */
+    public String getIdProofType() {
+        return idProofType;
+    }
 
-	public String getIdProofNumber() {
-		return idProofNumber;
-	}
+    /**
+     * Sets the ID proof type.
+     *
+     * @param idProofType the new ID proof type
+     */
+    public void setIdProofType(String idProofType) {
+        this.idProofType = idProofType;
+    }
 
-	public void setIdProofNumber(String idProofNumber) {
-		this.idProofNumber = idProofNumber;
-	}
+    /**
+     * Gets the ID proof number.
+     *
+     * @return the ID proof number
+     */
+    public String getIdProofNumber() {
+        return idProofNumber;
+    }
 
-	public String getOccupation() {
-		return occupation;
-	}
+    /**
+     * Sets the ID proof number.
+     *
+     * @param idProofNumber the new ID proof number
+     */
+    public void setIdProofNumber(String idProofNumber) {
+        this.idProofNumber = idProofNumber;
+    }
 
-	public void setOccupation(String occupation) {
-		this.occupation = occupation;
-	}
+    /**
+     * Gets the occupation.
+     *
+     * @return the occupation
+     */
+    public String getOccupation() {
+        return occupation;
+    }
 
-	public BigDecimal getAnnualIncome() {
-		return annualIncome;
-	}
+    /**
+     * Sets the occupation.
+     *
+     * @param occupation the new occupation
+     */
+    public void setOccupation(String occupation) {
+        this.occupation = occupation;
+    }
 
-	public void setAnnualIncome(BigDecimal annualIncome) {
-		this.annualIncome = annualIncome;
-	}
+    /**
+     * Gets the annual income.
+     *
+     * @return the annual income
+     */
+    public BigDecimal getAnnualIncome() {
+        return annualIncome;
+    }
 
-	public void setId(Integer id) {
-		this.id=id;
-	}
+    /**
+     * Sets the annual income.
+     *
+     * @param annualIncome the new annual income
+     */
+    public void setAnnualIncome(BigDecimal annualIncome) {
+        this.annualIncome = annualIncome;
+    }
 
-   
+    /**
+     * Sets the ID.
+     *
+     * @param id the new ID
+     */
+    public void setId(Integer id) {
+        this.id = id;
+    }
 }
