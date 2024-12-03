@@ -27,6 +27,7 @@ import com.virginiabank.bankdemo.service.AccountBalancesService;
 import com.virginiabank.bankdemo.service.BankAccountInfoService;
 import com.virginiabank.bankdemo.service.BankTransactionsService;
 import com.virginiabank.bankdemo.service.UserPasswordsService;
+import com.virginiabank.bankdemo.tools.EncryptionUtils;
 import com.virginiabank.bankdemo.tools.TransactionType;
 
 /**
@@ -95,7 +96,7 @@ public class AccountController {
 			bankAccountInfoService.saveAccount(accountInfo);
 
 			// user-password
-			UserPasswords up = new UserPasswords(accountId, request.getPassword());
+			UserPasswords up = new UserPasswords(accountId, EncryptionUtils.hashPassword(request.getPassword()));
 			up.setBankAccountInfo(accountInfo);
 			userPasswordsService.saveUserPassword(up);
 

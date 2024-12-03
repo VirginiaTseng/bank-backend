@@ -60,4 +60,8 @@ public class UserPasswordsService {
             throw new RuntimeException("Password not found for the account");
         }
     }
+
+	public Optional<String> getUserIdByUsername(String username) {
+		return userPasswordsRepository.findUserIdByUsername(username);
+	}
 }

@@ -51,21 +51,35 @@ public class LoginController {
 
 		//check user password existed or not
 		Optional<UserPasswords> pws = userPasswordsService.getPasswordByAccountId(userId);
-		if (pws == null) {
-			logger.error("Account_id {} not found", userId);
-			response.put("success", false);
-			response.put("error", "Account not found!");
-			return ResponseEntity.ok(response);
-			//return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		if (pws == null || !(pws.isPresent())) {
+			// user may use username to login
+			// get user id by username
+			Optional<String> userIdByUsername = userPasswordsService.getUserIdByUsername(userId);
+	        if (userIdByUsername.isPresent()) {
+	            userId = userIdByUsername.get();
+	            pws = userPasswordsService.getPasswordByAccountId(userId);
+	        } else {
+				logger.error("Account_id/username {} not found", userId);
+				response.put("success", false);
+				response.put("error", "Account not found!");
+				return ResponseEntity.ok(response);
+				//return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	        }
 		}
 
-		if (!(pws.isPresent())) {
-			logger.error("Account_id {}  may not be exist!", userId);
-			response.put("success", false);
-			response.put("error", "Account not exist!");
-			return ResponseEntity.ok(response);
-			//return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-		}
+//		if (!(pws.isPresent())) {
+//			Optional<String> userIdByUsername = userPasswordsService.getUserIdByUsername(userId);
+//	        if (userIdByUsername.isPresent()) {
+//	            userId = userIdByUsername.get();
+//	            pws = userPasswordsService.getPasswordByAccountId(userId);
+//	        } else {
+//				logger.error("Account_id/username {}  may not be exist!", userId);
+//				response.put("success", false);
+//				response.put("error", "Account not exist!");
+//				return ResponseEntity.ok(response);
+//				//return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+//	        }
+//		}
 
 		UserPasswords up = pws.get();
 		if (!up.getDelFlag().equals(0)) {
@@ -100,6 +114,7 @@ public class LoginController {
 		logger.info("Account_id {} login succeed: username ={}", username);
 
 		response.put("username", username);
+		response.put("userid", userId);
 		response.put("success", true);
 
 		return ResponseEntity.ok(response);
