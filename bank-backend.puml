@@ -1,0 +1,186 @@
+
+@startuml
+
+package com.virginiabank.bankdemo {
+    class BankdemoApplication {
+        + static void main(String[] args)
+    }
+}
+
+package com.virginiabank.bankdemo.controller {
+    class AccountController {
+        - Logger logger
+        - BankAccountInfoService bankAccountInfoService
+        - UserPasswordsService userPasswordsService
+        - AccountBalancesService accountBalancesService
+        - BankTransactionsService bankTransactionsService
+        + ResponseEntity<Map<String, Object>> register(RegisteredAccount request)
+        + ResponseEntity<BankAccountInfo> getAccountInfo(String id)
+        + ResponseEntity<String> update(String id, BankAccountInfo toUpdateInfo)
+        + ResponseEntity<String> delete(String id)
+    }
+
+    class BankTransactionController {
+        - Logger logger
+        - AccountBalancesService accountBalancesService
+        - BankTransactionsService bankTransactionsService
+        + ResponseEntity<Map<String, Object>> getTransactionHistory(String id)
+        + ResponseEntity<Double> balance(String id)
+        + ResponseEntity<Map<String, Object>> deposit(String id, Map<String, Object> request)
+        + ResponseEntity<Map<String, Object>> withdraw(String id, Map<String, Object> request)
+        - Map<String, Object> checkAccountAndTransactionAmount(String accountId, BigDecimal amount, BigDecimal balance, boolean isWithdraw)
+    }
+
+    class LoginController {
+        - Logger logger
+        - BankAccountInfoService bankAccountInfoService
+        - UserPasswordsService userPasswordsService
+        + ResponseEntity<Map<String, Object>> login(String userId, String password)
+        + ResponseEntity<String> logout1(String userId)
+        + ResponseEntity<String> logout(String id)
+        + ResponseEntity<String> logout2(String id)
+    }
+}
+
+package com.virginiabank.bankdemo.model {
+    class AccountBalances {
+        - String accountId
+        - double balance
+        - BankAccountInfo bankAccountInfo
+        - Date lastUpdated
+    }
+
+    class BankAccountInfo {
+        - int id
+        - String accountId
+        - String customerName
+        - Date dateOfBirth
+        - int gender
+        - String address
+        - String phoneNumber
+        - String email
+        - int accountType
+        - double initialDeposit
+        - Date dateOpened
+        - String branchId
+        - String idProofType
+        - String idProofNumber
+        - String occupation
+        - double annualIncome
+    }
+
+    class BankTransactions {
+        - String accountId
+        - double amount
+        - double balanceAfterTransaction
+        - String description
+        - String branchId
+        - Date transactionDate
+        - int transactionType
+    }
+
+    class RegisteredAccount {
+        - String username
+        - String password
+        - String confirmPassword
+        - int gender
+        - String address
+        - String phoneNumber
+        - String email
+        - int accountType
+        - double initialDeposit
+        - String idProofType
+        - String idProofNumber
+        - String occupation
+        - double annualIncome
+        - Date dateOfBirth
+    }
+
+    class UserPasswords {
+        - String accountId
+        - String password
+        - BankAccountInfo bankAccountInfo
+        - int delFlag
+    }
+}
+
+package com.virginiabank.bankdemo.service {
+    interface BankAccountInfoService {
+        + String getANewAccountId()
+        + void saveAccount(BankAccountInfo accountInfo)
+        + Optional<BankAccountInfo> getAccountById(String id)
+    }
+
+    interface UserPasswordsService {
+        + void saveUserPassword(UserPasswords userPasswords)
+        + Optional<UserPasswords> getPasswordByAccountId(String accountId)
+        + Optional<String> getUserIdByUsername(String username)
+    }
+
+    interface AccountBalancesService {
+        + void saveBalance(AccountBalances accountBalances)
+        + Optional<AccountBalances> getBalanceByAccountId(String accountId)
+    }
+
+    interface BankTransactionsService {
+        + void saveTransaction(BankTransactions bankTransactions)
+        + List<BankTransactions> getTransactionsByAccountId(String accountId)
+        + boolean handleTransaction(String accountId, int transactionType, BigDecimal amount, BigDecimal balance, Date updateTime, String description)
+    }
+}
+
+package com.virginiabank.bankdemo.repository {
+    interface UserPasswordsRepository {
+        + Optional<String> findUserIdByUsername(String username)
+    }
+
+    interface BankTransactionsRepository {
+        + List<BankTransactions> findByAccountId(String accountId)
+        + List<BankTransactions> findByAccountIdOrderByTransactionDateDesc(String accountId)
+    }
+
+    interface BankAccountInfoRepository {
+        + Integer findMaxAccountId()
+    }
+
+    interface AccountBalancesRepository {
+        + int saveBalanceById(String accountId, BigDecimal balance, Date lastUpdated)
+    }
+}
+
+package com.virginiabank.bankdemo.tools {
+    class ConversionUtils {
+        + BigDecimal toBigDecimal(Object value)
+        + BigDecimal toBigDecimal(Object value, BigDecimal defaultValue)
+        + Integer toInteger(Object value, Integer defaultValue)
+    }
+
+    class EncryptionUtils {
+        + static String hashPassword(String password)
+    }
+
+    enum TransactionType {
+        DEPOSIT(1),
+        WITHDRAW(2);
+        + int getCode()
+        + static TransactionType fromCode(int code)
+    }
+}
+
+AccountController --> BankAccountInfoService
+AccountController --> UserPasswordsService
+AccountController --> AccountBalancesService
+AccountController --> BankTransactionsService
+BankTransactionController --> AccountBalancesService
+BankTransactionController --> BankTransactionsService
+LoginController --> BankAccountInfoService
+LoginController --> UserPasswordsService
+UserPasswords --> BankAccountInfo
+AccountBalances --> BankAccountInfo
+BankTransactions --> BankAccountInfo
+UserPasswordsService --> UserPasswordsRepository
+BankTransactionsService --> BankTransactionsRepository
+BankAccountInfoRepository --> BankAccountInfo
+AccountBalancesService --> AccountBalancesRepository
+
+@enduml

@@ -1,0 +1,109 @@
+
+@startuml
+
+package com.virginiabank.bankdemo.controller {
+    class AccountController {
+        - Logger logger
+        - BankAccountInfoService bankAccountInfoService
+        - UserPasswordsService userPasswordsService
+        - AccountBalancesService accountBalancesService
+        - BankTransactionsService bankTransactionsService
+        + ResponseEntity<Map<String, Object>> register(RegisteredAccount request)
+        + ResponseEntity<BankAccountInfo> getAccountInfo(String id)
+        + ResponseEntity<String> update(String id, BankAccountInfo toUpdateInfo)
+        + ResponseEntity<String> delete(String id)
+    }
+}
+
+package com.virginiabank.bankdemo.model {
+    class AccountBalances {
+        - String accountId
+        - double balance
+        - BankAccountInfo bankAccountInfo
+        - Date lastUpdated
+    }
+
+    class BankAccountInfo {
+        - int id
+        - String accountId
+        - String customerName
+        - Date dateOfBirth
+        - int gender
+        - String address
+        - String phoneNumber
+        - String email
+        - int accountType
+        - double initialDeposit
+        - Date dateOpened
+        - String branchId
+        - String idProofType
+        - String idProofNumber
+        - String occupation
+        - double annualIncome
+    }
+
+    class BankTransactions {
+        - String accountId
+        - double amount
+        - double balanceAfterTransaction
+        - String description
+        - String branchId
+        - Date transactionDate
+        - int transactionType
+    }
+
+    class RegisteredAccount {
+        - String username
+        - String password
+        - String confirmPassword
+        - int gender
+        - String address
+        - String phoneNumber
+        - String email
+        - int accountType
+        - double initialDeposit
+        - String idProofType
+        - String idProofNumber
+        - String occupation
+        - double annualIncome
+        - Date dateOfBirth
+    }
+
+    class UserPasswords {
+        - String accountId
+        - String password
+        - BankAccountInfo bankAccountInfo
+        - int delFlag
+    }
+}
+
+package com.virginiabank.bankdemo.service {
+    interface BankAccountInfoService {
+        + String getANewAccountId()
+        + void saveAccount(BankAccountInfo accountInfo)
+        + Optional<BankAccountInfo> getAccountById(String id)
+    }
+
+    interface UserPasswordsService {
+        + void saveUserPassword(UserPasswords userPasswords)
+        + Optional<UserPasswords> getPasswordByAccountId(String accountId)
+    }
+
+    interface AccountBalancesService {
+        + void saveBalance(AccountBalances accountBalances)
+    }
+
+    interface BankTransactionsService {
+        + void saveTransaction(BankTransactions bankTransactions)
+    }
+}
+
+AccountController --> BankAccountInfoService
+AccountController --> UserPasswordsService
+AccountController --> AccountBalancesService
+AccountController --> BankTransactionsService
+UserPasswords --> BankAccountInfo
+AccountBalances --> BankAccountInfo
+BankTransactions --> BankAccountInfo
+
+@enduml
